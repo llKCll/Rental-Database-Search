@@ -1,3 +1,3 @@
 # rental_store
 
-Print a summary of monthly activity for a customer for the month specified at a movie rental store.
+Search a customer in the database and print their rental history for a particular month and year. 
