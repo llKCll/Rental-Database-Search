@@ -5,14 +5,15 @@ dbFile = 'sakila211.db'
 conn = connect(dbFile)
 c = conn.cursor()
 
+'''
+    Print a summary of monthly activity for a customer for the month specified.
+    If it was returned that month, it will only show the return date and if it was late.
+    If it was only checked out that month, it will only show the check out date. If it was returned late, 
+    it will show on the month it was returned late and the fee will be calculated for that month
+    Args: Last name, month, year.
+    Effects: Prints a monthly report for rentals.
+'''
 def sakila_report(last, month, year):
-    ''' Print a summary of monthly activity for a customer for the month specified.
-        If it was returned that month, it will only show the return date and if it was late.
-        If it was only checked out that month, it will only show the check out date. If it was returned late, 
-        it will show on the month it was returned late and the fee will be calculated for that month
-        Args: Last name, month, year.
-        Effects: Prints a monthly report for rentals.
-    '''
     # Display header for report.
     print_header(last)
     month, year = str(month), str(year)
@@ -78,23 +79,25 @@ def sakila_report(last, month, year):
     
     total = str(round(total, 2))
     print('Monthly Total:', '$' + total)
-    
+
+'''
+    A helper function to see if there is a late fee.
+    Args: Dated rented, dated returned, and the duration of the rental.
+    Returns: True if there is a late fee, or False if there isn't.
+'''
 def calc_fee(rented, returned, rental_dur):
-    ''' A helper function to see if there is a late fee.
-        Args: Dated rented, dated returned, and the duration of the rental.
-        Returns: True if there is a late fee, or False if there isn't.
-    '''
     diff = returned - rented 
     if diff.days > rental_dur:
         return True
     else:
         return False
 
+'''
+    Finds first name and prints a display header.
+    Args: Last name.
+    Effects: Prints rental display.
+'''
 def print_header(last):
-    ''' Finds first name and prints a display header.
-        Args: Last name.
-        Effects: Prints rental display.
-    '''
     query = 'select first_name from customer where last_name = ?'
     cur = c.execute(query, (last,))
     first = cur.fetchone()
@@ -103,10 +106,6 @@ def print_header(last):
         print('Monthly Report for', first[0], last, '\n')
 
 
-def main():
- 
+if __name__ == "__main__":
     sakila_report('Black', 6, 2005)
-
-
-main()
 
